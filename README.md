@@ -2,6 +2,20 @@
 
 為 PDF 的每一頁加入置中、半透明的對角文字浮水印。
 
+[English](README.en.md) | 繁體中文
+
+## 功能
+
+- 支援單一或多個 PDF 檔案。
+- 每一頁會依原始頁面尺寸個別產生浮水印。
+- 可自訂浮水印文字，並支援中文文字。
+- 原始檔案不會被覆寫。
+
+## 系統需求
+
+- Python 3.14 或更新版本
+- [uv](https://docs.astral.sh/uv/)
+
 ## 直接執行
 
 不需安裝即可從專案目錄執行：
@@ -24,5 +38,41 @@ pdf-watermark input.pdf
 uv tool install --force git+https://github.com/codemee/pdf_watermark.git@latest
 ```
 
+此 repository 為 private 時，安裝者必須具有 GitHub 存取權限，且 Git 已設定可用的認證。
+
+## 使用方式
+
+使用預設文字 `Confidential`：
+
+```powershell
+pdf-watermark input.pdf
+```
+
+指定文字：
+
+```powershell
+pdf-watermark --text "機密文件" input.pdf
+```
+
+一次處理多個檔案：
+
+```powershell
+pdf-watermark file1.pdf file2.pdf
+```
+
 可一次處理多個檔案；輸出預設位於原檔旁，檔名為
 `<原始檔名>_wm.pdf`。
+
+## 開發與驗證
+
+```powershell
+uv sync
+uv run create_test_pdf.py
+uv run pdf-watermark --text "機密 Confidential" test.pdf
+```
+
+`test.pdf` 包含 A4、Letter 與 A3 三種頁面尺寸，產生的 `test_wm.pdf` 可用於人工檢查結果。
+
+## 實作細節
+
+請參閱[實作細節解說](docs/implementation.zh-TW.md)。
