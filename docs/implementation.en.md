@@ -17,7 +17,7 @@ English | [繁體中文](implementation.zh-TW.md)
 2. Each input path is passed to `add_watermark()` in sequence.
 3. `pypdf.PdfReader` reads the source PDF and obtains each page's `mediabox` width and height.
 4. `_create_watermark_page()` uses ReportLab to generate an equally sized, single-page PDF in memory.
-5. `page.merge_page()` overlays the watermark page, and the result is added to `PdfWriter`.
+5. The source page is added to `PdfWriter`, then `merge_page()` overlays the watermark on the writer-owned page.
 6. After all pages are processed, the result is written as `<original-name>_wm.pdf`.
 
 The watermark page uses `io.BytesIO`, so the merge does not require temporary PDF files.
@@ -32,9 +32,9 @@ The watermark page uses `io.BytesIO`, so the merge does not require temporary PD
 
 ## Font handling
 
-ASCII-only text uses the built-in `Helvetica-Bold` font. Text containing any non-ASCII character triggers registration of ReportLab's `STSong-Light` CID font. The registration state is cached to avoid repeated work across pages.
+All watermark text uses the bundled `NotoSansTC-Regular.ttf`. `importlib.resources` locates the font as a package resource, while `TTFont` embeds a subset containing the glyphs used by the watermark PDF. The merged page therefore does not depend on the rendering environment having the same font installed.
 
-`STSong-Light` is primarily intended for Chinese content and does not cover every Unicode character. Configurable embedded fonts would be needed for broad multilingual support.
+The font is registered only once per process to avoid repeated parsing across pages and files. It is distributed under the SIL Open Font License 1.1, included at `src/pdf_watermark/fonts/OFL.txt`.
 
 ## Output and error behavior
 
@@ -47,14 +47,16 @@ ASCII-only text uses the built-in `Helvetica-Bold` font. Text containing any non
 
 - The CLI does not yet expose output path, angle, opacity, color, or font options.
 - Layout uses the page `mediabox`; unusual `cropbox` or page rotation settings may require additional handling.
+- Font embedding removes the system-font dependency but makes output files somewhat larger.
 - Encrypted, damaged, or permission-restricted PDFs may not be processable.
 
 ## Verification
 
 ```powershell
 uv build
+uv run python -m unittest discover -s tests
 uv run create_test_pdf.py
 uv run pdf-watermark --text "Confidential" test.pdf
 ```
 
-The build should create both a wheel and a source distribution. The functional check should produce `test_wm.pdf` while preserving its three different page sizes.
+The unit test checks that the output page's Noto Sans TC font resource contains an embedded `/FontFile2`. The build should create both a wheel and a source distribution. The functional check should produce `test_wm.pdf` while preserving its three different page sizes.

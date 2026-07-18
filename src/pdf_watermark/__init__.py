@@ -1,24 +1,29 @@
 """Add diagonal watermark text to PDF files."""
 
 import io
+from importlib.resources import as_file, files
 from pathlib import Path
 
 import pypdf
 from reportlab.lib.colors import Color
 from reportlab.pdfbase import pdfmetrics as _pdfmetrics
-from reportlab.pdfbase.cidfonts import UnicodeCIDFont as _UnicodeCIDFont
+from reportlab.pdfbase.ttfonts import TTFont as _TTFont
 from reportlab.pdfgen import canvas as rl_canvas
 
 WATERMARK_TEXT = "Confidential"
-_CJK_FONT = "STSong-Light"
-_cjk_font_registered = False
+_WATERMARK_FONT = "NotoSansTC"
+_FONT_RESOURCE = "fonts/NotoSansTC-Regular.ttf"
+_font_registered = False
 
 
-def _ensure_cjk_font() -> None:
-    global _cjk_font_registered
-    if not _cjk_font_registered:
-        _pdfmetrics.registerFont(_UnicodeCIDFont(_CJK_FONT))
-        _cjk_font_registered = True
+def _ensure_watermark_font() -> None:
+    """Register the bundled font so ReportLab embeds it in generated PDFs."""
+    global _font_registered
+    if not _font_registered:
+        font_resource = files(__package__).joinpath(_FONT_RESOURCE)
+        with as_file(font_resource) as font_path:
+            _pdfmetrics.registerFont(_TTFont(_WATERMARK_FONT, font_path))
+        _font_registered = True
 
 
 def _create_watermark_page(width: float, height: float, text: str) -> io.BytesIO:
@@ -30,12 +35,8 @@ def _create_watermark_page(width: float, height: float, text: str) -> io.BytesIO
     canvas.setFillColor(Color(0, 0, 0, alpha=0.15))
 
     font_size = min(width, height) / 5
-    if any(ord(character) > 127 for character in text):
-        _ensure_cjk_font()
-        font_name = _CJK_FONT
-    else:
-        font_name = "Helvetica-Bold"
-    canvas.setFont(font_name, font_size)
+    _ensure_watermark_font()
+    canvas.setFont(_WATERMARK_FONT, font_size)
 
     canvas.translate(width / 2, height / 2)
     canvas.rotate(45)
@@ -70,8 +71,8 @@ def add_watermark(
         watermark = _create_watermark_page(width, height, text)
         watermark_page = pypdf.PdfReader(watermark).pages[0]
 
-        page.merge_page(watermark_page)
         writer.add_page(page)
+        writer.pages[-1].merge_page(watermark_page)
 
     with output_path.open("wb") as output_file:
         writer.write(output_file)

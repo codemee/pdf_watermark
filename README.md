@@ -9,6 +9,7 @@
 - 支援單一或多個 PDF 檔案。
 - 每一頁會依原始頁面尺寸個別產生浮水印。
 - 可自訂浮水印文字，並支援中文文字。
+- 內嵌 Noto Sans TC 字型子集，不依賴閱讀器的系統字型。
 - 原始檔案不會被覆寫。
 
 ## 系統需求
@@ -76,3 +77,7 @@ uv run pdf-watermark --text "機密 Confidential" test.pdf
 ## 實作細節
 
 請參閱[實作細節解說](docs/implementation.zh-TW.md)。
+
+## 字型授權
+
+本專案隨附的 Noto Sans TC 由 Google Fonts 提供，採用 SIL Open Font License 1.1；完整條款位於 `src/pdf_watermark/fonts/OFL.txt`。

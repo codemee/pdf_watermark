@@ -1,6 +1,6 @@
 [project]
 name = "pdf-watermark"
-version = "0.0.1"
+version = "0.0.2"
 description = "Add diagonal text watermarks to PDF files"
 readme = "README.md"
 requires-python = ">=3.14"
@@ -17,4 +17,4 @@ requires = ["uv_build>=0.11.29,<0.12.0"]
 build-backend = "uv_build"
 
 [tool.uv.build-backend]
-source-include = ["README.en.md", "docs/**"]
+source-include = ["README.en.md", "docs/**", "tests/**"]

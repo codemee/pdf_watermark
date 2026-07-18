@@ -9,6 +9,7 @@ English | [繁體中文](README.md)
 - Process one or more PDF files in a single command.
 - Generate each watermark using the original page dimensions.
 - Customize the watermark text, including Chinese text.
+- Embed a Noto Sans TC font subset instead of relying on fonts installed on the viewer.
 - Preserve the original files.
 
 ## Requirements
@@ -75,3 +76,7 @@ uv run pdf-watermark --text "Confidential" test.pdf
 ## Implementation details
 
 See the [implementation guide](docs/implementation.en.md).
+
+## Font license
+
+The bundled Noto Sans TC font is provided by Google Fonts under the SIL Open Font License 1.1. The full license is in `src/pdf_watermark/fonts/OFL.txt`.
