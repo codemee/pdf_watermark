@@ -11,17 +11,17 @@ uvx . input.pdf
 uvx . --text "Top Secret" input.pdf
 ```
 
-## 安裝為 uv tool
+## 安裝最新版本
 
 ```powershell
-uv tool install .
+uv tool install git+https://github.com/codemee/pdf_watermark.git@latest
 pdf-watermark input.pdf
 ```
 
-更新本機安裝：
+`latest` 標籤會隨每次正式版本更新。若已安裝，使用以下指令更新至最新版本：
 
 ```powershell
-uv tool install . --force
+uv tool install --force git+https://github.com/codemee/pdf_watermark.git@latest
 ```
 
 可一次處理多個檔案；輸出預設位於原檔旁，檔名為
