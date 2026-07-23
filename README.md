@@ -14,50 +14,90 @@
 
 ## 系統需求
 
+- Windows、macOS 或 Linux
 - Python 3.14 或更新版本
 - [uv](https://docs.astral.sh/uv/)
 
-## 直接執行
+## 不使用 Git：下載 ZIP 後執行
 
-不需安裝即可從專案目錄執行：
+此 repository 為 public，可從 GitHub 下載 `latest` 標籤的 ZIP，不需要安裝或使用 Git。
+
+Windows PowerShell：
 
 ```powershell
+Invoke-WebRequest `
+  https://github.com/codemee/pdf_watermark/archive/refs/tags/latest.zip `
+  -OutFile pdf-watermark-latest.zip
+Expand-Archive pdf-watermark-latest.zip -DestinationPath pdf-watermark-source
+Set-Location pdf-watermark-source\pdf_watermark-latest
+```
+
+macOS 或 Linux：
+
+```sh
+curl -L https://github.com/codemee/pdf_watermark/archive/refs/tags/latest.zip \
+  -o pdf-watermark-latest.zip
+unzip pdf-watermark-latest.zip -d pdf-watermark-source
+cd pdf-watermark-source/pdf_watermark-latest
+```
+
+也可以在任何平台的 GitHub 頁面選擇 **Code > Download ZIP**，解壓後進入專案目錄。
+
+不需安裝即可執行：
+
+```console
 uvx . input.pdf
 uvx . --text "Top Secret" input.pdf
 ```
 
-## 安裝最新版本
+若要永久安裝 `pdf-watermark` 指令：
 
-```powershell
+```console
+uv tool install .
+pdf-watermark input.pdf
+```
+
+也可以不手動下載或解壓，直接從 ZIP URL 安裝：
+
+```console
+uv tool install "pdf-watermark @ https://github.com/codemee/pdf_watermark/archive/refs/tags/latest.zip"
+pdf-watermark input.pdf
+```
+
+以上方式都不需要 Git。uv 仍會透過 HTTPS 下載 Python 與 Python 套件相依項目。
+
+## 使用 Git 安裝最新版本
+
+```console
 uv tool install git+https://github.com/codemee/pdf_watermark.git@latest
 pdf-watermark input.pdf
 ```
 
 `latest` 標籤會隨每次正式版本更新。若已安裝，使用以下指令更新至最新版本：
 
-```powershell
+```console
 uv tool install --force git+https://github.com/codemee/pdf_watermark.git@latest
 ```
 
-此 repository 為 private 時，安裝者必須具有 GitHub 存取權限，且 Git 已設定可用的認證。
+此安裝方式需要系統上有 Git。若只想更新以 ZIP URL 安裝的版本，也可重新執行對應的 `uv tool install` 指令並加上 `--force`。
 
 ## 使用方式
 
 使用預設文字 `Confidential`：
 
-```powershell
+```console
 pdf-watermark input.pdf
 ```
 
 指定文字：
 
-```powershell
+```console
 pdf-watermark --text "機密文件" input.pdf
 ```
 
 一次處理多個檔案：
 
-```powershell
+```console
 pdf-watermark file1.pdf file2.pdf
 ```
 
@@ -66,7 +106,7 @@ pdf-watermark file1.pdf file2.pdf
 
 ## 開發與驗證
 
-```powershell
+```console
 uv sync
 uv run create_test_pdf.py
 uv run pdf-watermark --text "機密 Confidential" test.pdf

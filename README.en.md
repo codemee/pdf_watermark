@@ -14,50 +14,90 @@ English | [繁體中文](README.md)
 
 ## Requirements
 
+- Windows, macOS, or Linux
 - Python 3.14 or newer
 - [uv](https://docs.astral.sh/uv/)
 
-## Run from a local checkout
+## Run from a ZIP without Git
 
-No installation is required when running from the project directory:
+This repository is public. Download the ZIP for the `latest` tag without installing or using Git.
+
+Windows PowerShell:
 
 ```powershell
+Invoke-WebRequest `
+  https://github.com/codemee/pdf_watermark/archive/refs/tags/latest.zip `
+  -OutFile pdf-watermark-latest.zip
+Expand-Archive pdf-watermark-latest.zip -DestinationPath pdf-watermark-source
+Set-Location pdf-watermark-source\pdf_watermark-latest
+```
+
+macOS or Linux:
+
+```sh
+curl -L https://github.com/codemee/pdf_watermark/archive/refs/tags/latest.zip \
+  -o pdf-watermark-latest.zip
+unzip pdf-watermark-latest.zip -d pdf-watermark-source
+cd pdf-watermark-source/pdf_watermark-latest
+```
+
+On any platform, you can instead select **Code > Download ZIP** on GitHub, extract the archive, and enter the project directory.
+
+Run the tool without installing it:
+
+```console
 uvx . input.pdf
 uvx . --text "Top Secret" input.pdf
 ```
 
-## Install the latest version
+To install the `pdf-watermark` command persistently:
 
-```powershell
+```console
+uv tool install .
+pdf-watermark input.pdf
+```
+
+You can also install directly from the ZIP URL without downloading or extracting it manually:
+
+```console
+uv tool install "pdf-watermark @ https://github.com/codemee/pdf_watermark/archive/refs/tags/latest.zip"
+pdf-watermark input.pdf
+```
+
+None of these methods require Git. uv will still download Python and Python package dependencies over HTTPS.
+
+## Install the latest version with Git
+
+```console
 uv tool install git+https://github.com/codemee/pdf_watermark.git@latest
 pdf-watermark input.pdf
 ```
 
 The floating `latest` tag is updated for each release. To refresh an existing installation:
 
-```powershell
+```console
 uv tool install --force git+https://github.com/codemee/pdf_watermark.git@latest
 ```
 
-When this repository is private, the installer needs GitHub access and working Git credentials.
+This installation method requires Git. To refresh an installation made from the ZIP URL instead, rerun its `uv tool install` command with `--force`.
 
 ## Usage
 
 Use the default `Confidential` text:
 
-```powershell
+```console
 pdf-watermark input.pdf
 ```
 
 Set custom text:
 
-```powershell
+```console
 pdf-watermark --text "Top Secret" input.pdf
 ```
 
 Process multiple files:
 
-```powershell
+```console
 pdf-watermark file1.pdf file2.pdf
 ```
 
@@ -65,7 +105,7 @@ Each output is written next to its input as `<original-name>_wm.pdf`. The input 
 
 ## Development and verification
 
-```powershell
+```console
 uv sync
 uv run create_test_pdf.py
 uv run pdf-watermark --text "Confidential" test.pdf
