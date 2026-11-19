@@ -1,6 +1,6 @@
 # pdf-watermark implementation details
 
-English | [繁體中文](implementation.zh-TW.md)
+English | [繁體中文](https://github.com/codemee/pdf_watermark/blob/main/docs/implementation.zh-TW.md)
 
 ## Project layout
 
@@ -24,7 +24,8 @@ The watermark page uses `io.BytesIO`, so the merge does not require temporary PD
 
 ## Watermark layout
 
-- Font size is one fifth of the shorter page dimension: `min(width, height) / 5`.
+- The maximum font size is one fifth of the shorter page dimension: `min(width, height) / 5`.
+- The actual text width is measured with the bundled font. If it exceeds 90% of the diagonal span available after the 45-degree rotation, the font is scaled down proportionally so long text remains inside the page. Short text keeps the maximum size above.
 - The canvas origin is translated to the page center and then rotated 45 degrees.
 - `drawCentredString()` centers the text along the rotated horizontal axis.
 - The fill is black at 15% opacity.

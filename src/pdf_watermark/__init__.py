@@ -1,6 +1,7 @@
 """Add diagonal watermark text to PDF files."""
 
 import io
+import math
 from importlib.resources import as_file, files
 from pathlib import Path
 
@@ -13,6 +14,8 @@ from reportlab.pdfgen import canvas as rl_canvas
 WATERMARK_TEXT = "Confidential"
 _WATERMARK_FONT = "NotoSansTC"
 _FONT_RESOURCE = "fonts/NotoSansTC-Regular.ttf"
+_MAX_FONT_SIZE_RATIO = 1 / 5
+_TEXT_SPAN_RATIO = 0.9
 _font_registered = False
 
 
@@ -26,6 +29,21 @@ def _ensure_watermark_font() -> None:
         _font_registered = True
 
 
+def _calculate_font_size(width: float, height: float, text: str) -> float:
+    """Return a page-relative font size that keeps the text within the page."""
+    max_font_size = min(width, height) * _MAX_FONT_SIZE_RATIO
+    if not text:
+        return max_font_size
+
+    _ensure_watermark_font()
+    text_width = _pdfmetrics.stringWidth(text, _WATERMARK_FONT, max_font_size)
+    available_width = min(width, height) * math.sqrt(2) * _TEXT_SPAN_RATIO
+    if text_width <= available_width:
+        return max_font_size
+
+    return max_font_size * available_width / text_width
+
+
 def _create_watermark_page(width: float, height: float, text: str) -> io.BytesIO:
     """Return an in-memory single-page PDF containing only the watermark."""
     packet = io.BytesIO()
@@ -34,8 +52,7 @@ def _create_watermark_page(width: float, height: float, text: str) -> io.BytesIO
     canvas.saveState()
     canvas.setFillColor(Color(0, 0, 0, alpha=0.15))
 
-    font_size = min(width, height) / 5
-    _ensure_watermark_font()
+    font_size = _calculate_font_size(width, height, text)
     canvas.setFont(_WATERMARK_FONT, font_size)
 
     canvas.translate(width / 2, height / 2)

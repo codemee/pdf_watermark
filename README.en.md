@@ -2,13 +2,14 @@
 
 Add centered, semi-transparent diagonal text watermarks to every page of a PDF.
 
-English | [繁體中文](README.md)
+English | [繁體中文](https://github.com/codemee/pdf_watermark/blob/main/README.md)
 
 ## Features
 
 - Process one or more PDF files in a single command.
 - Generate each watermark using the original page dimensions.
 - Customize the watermark text, including Chinese text.
+- Automatically scale down long text to fit the page's available diagonal width.
 - Embed a Noto Sans TC font subset instead of relying on fonts installed on the viewer.
 - Preserve the original files.
 
@@ -18,27 +19,27 @@ English | [繁體中文](README.md)
 - Python 3.14 or newer
 - [uv](https://docs.astral.sh/uv/)
 
-## Run from a ZIP without Git
+## Run the latest release from a ZIP without Git
 
-This repository is public. Download the ZIP for the `latest` tag without installing or using Git.
+This repository is public. The URL below follows the [GitHub Latest Release](https://github.com/codemee/pdf_watermark/releases/latest) automatically and does not require Git.
 
 Windows PowerShell:
 
 ```powershell
 Invoke-WebRequest `
-  https://github.com/codemee/pdf_watermark/archive/refs/tags/latest.zip `
-  -OutFile pdf-watermark-latest.zip
-Expand-Archive pdf-watermark-latest.zip -DestinationPath pdf-watermark-source
-Set-Location pdf-watermark-source\pdf_watermark-latest
+  https://github.com/codemee/pdf_watermark/releases/latest/download/pdf-watermark-source.zip `
+  -OutFile pdf-watermark-source.zip
+Expand-Archive pdf-watermark-source.zip -DestinationPath pdf-watermark-source
+Set-Location pdf-watermark-source\pdf_watermark
 ```
 
 macOS or Linux:
 
 ```sh
-curl -L https://github.com/codemee/pdf_watermark/archive/refs/tags/latest.zip \
-  -o pdf-watermark-latest.zip
-unzip pdf-watermark-latest.zip -d pdf-watermark-source
-cd pdf-watermark-source/pdf_watermark-latest
+curl -L https://github.com/codemee/pdf_watermark/releases/latest/download/pdf-watermark-source.zip \
+  -o pdf-watermark-source.zip
+unzip pdf-watermark-source.zip -d pdf-watermark-source
+cd pdf-watermark-source/pdf_watermark
 ```
 
 On any platform, you can instead select **Code > Download ZIP** on GitHub, extract the archive, and enter the project directory.
@@ -60,26 +61,40 @@ pdf-watermark input.pdf
 You can also install directly from the ZIP URL without downloading or extracting it manually:
 
 ```console
-uv tool install "pdf-watermark @ https://github.com/codemee/pdf_watermark/archive/refs/tags/latest.zip"
+uv tool install "pdf-watermark @ https://github.com/codemee/pdf_watermark/releases/latest/download/pdf-watermark-source.zip"
 pdf-watermark input.pdf
 ```
 
 None of these methods require Git. uv will still download Python and Python package dependencies over HTTPS.
 
-## Install the latest version with Git
+To upgrade an existing installation to the latest release using the same URL:
 
 ```console
-uv tool install git+https://github.com/codemee/pdf_watermark.git@latest
+uv tool install --force "pdf-watermark @ https://github.com/codemee/pdf_watermark/releases/latest/download/pdf-watermark-source.zip"
+```
+
+## Install the latest default-branch revision with Git
+
+```console
+uv tool install git+https://github.com/codemee/pdf_watermark.git
 pdf-watermark input.pdf
 ```
 
-The floating `latest` tag is updated for each release. To refresh an existing installation:
+This method installs the latest default-branch revision, which may include changes that have not been formally released. To refresh an existing installation:
 
 ```console
-uv tool install --force git+https://github.com/codemee/pdf_watermark.git@latest
+uv tool install --force git+https://github.com/codemee/pdf_watermark.git
 ```
 
 This installation method requires Git. To refresh an installation made from the ZIP URL instead, rerun its `uv tool install` command with `--force`.
+
+### Install a specific version (optional)
+
+uv also accepts a tag after the Git URL. For example, to install `v0.0.4`:
+
+```console
+uv tool install git+https://github.com/codemee/pdf_watermark.git@v0.0.4
+```
 
 ## Usage
 
@@ -115,7 +130,7 @@ uv run pdf-watermark --text "Confidential" test.pdf
 
 ## Implementation details
 
-See the [implementation guide](docs/implementation.en.md).
+See the [implementation guide](https://github.com/codemee/pdf_watermark/blob/main/docs/implementation.en.md).
 
 ## Font license
 

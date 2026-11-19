@@ -1,6 +1,6 @@
 # pdf-watermark 實作細節
 
-[English](implementation.en.md) | 繁體中文
+[English](https://github.com/codemee/pdf_watermark/blob/main/docs/implementation.en.md) | 繁體中文
 
 ## 專案結構
 
@@ -24,7 +24,8 @@
 
 ## 浮水印版面
 
-- 字體大小為頁面短邊的五分之一：`min(width, height) / 5`。
+- 字體大小上限為頁面短邊的五分之一：`min(width, height) / 5`。
+- 程式會以內嵌字型量測實際文字寬度；若文字超過旋轉 45 度後可用對角跨度的 90%，便等比例縮小字體，使長文字保留在頁面範圍內。短文字仍使用上述最大字體。
 - 畫布原點先移到頁面中央，再旋轉 45 度。
 - `drawCentredString()` 讓文字在旋轉後的水平軸上置中。
 - 填色為黑色，透明度為 15%。
