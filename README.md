@@ -19,6 +19,35 @@
 - Python 3.14 或更新版本
 - [uv](https://docs.astral.sh/uv/)
 
+## 從 PyPI 安裝（建議）
+
+本專案在 PyPI 上的套件名稱是 [`pdfcwm`](https://pypi.org/project/pdfcwm/)，安裝後的命令仍是 `pdf-watermark`。未指定版本時，uv 會安裝最新版本：
+
+```console
+uv tool install pdfcwm
+pdf-watermark input.pdf
+```
+
+不安裝、直接執行：
+
+```console
+uvx --from pdfcwm pdf-watermark input.pdf
+```
+
+更新至最新版：
+
+```console
+uv tool upgrade pdfcwm
+```
+
+### 安裝特定版本（補充）
+
+例如安裝 `0.0.5`：
+
+```console
+uv tool install pdfcwm@0.0.5
+```
+
 ## 不使用 Git：下載最新版 ZIP 後執行
 
 此 repository 為 public。以下網址會由 [GitHub Latest Release](https://github.com/codemee/pdf_watermark/releases/latest) 自動指向最新正式版本，不需要安裝或使用 Git。
@@ -47,8 +76,8 @@ cd pdf-watermark-source/pdf_watermark
 不需安裝即可執行：
 
 ```console
-uvx . input.pdf
-uvx . --text "Top Secret" input.pdf
+uvx --from . pdf-watermark input.pdf
+uvx --from . pdf-watermark --text "Top Secret" input.pdf
 ```
 
 若要永久安裝 `pdf-watermark` 指令：
@@ -61,7 +90,7 @@ pdf-watermark input.pdf
 也可以不手動下載或解壓，直接從 ZIP URL 安裝：
 
 ```console
-uv tool install "pdf-watermark @ https://github.com/codemee/pdf_watermark/releases/latest/download/pdf-watermark-source.zip"
+uv tool install "pdfcwm @ https://github.com/codemee/pdf_watermark/releases/latest/download/pdf-watermark-source.zip"
 pdf-watermark input.pdf
 ```
 
@@ -70,7 +99,7 @@ pdf-watermark input.pdf
 若已安裝，使用相同網址更新至最新正式版本：
 
 ```console
-uv tool install --force "pdf-watermark @ https://github.com/codemee/pdf_watermark/releases/latest/download/pdf-watermark-source.zip"
+uv tool install --force "pdfcwm @ https://github.com/codemee/pdf_watermark/releases/latest/download/pdf-watermark-source.zip"
 ```
 
 ## 使用 Git 安裝預設分支最新內容
@@ -87,14 +116,6 @@ uv tool install --force git+https://github.com/codemee/pdf_watermark.git
 ```
 
 此安裝方式需要系統上有 Git。若只想更新以 ZIP URL 安裝的版本，也可重新執行對應的 `uv tool install` 指令並加上 `--force`。
-
-### 安裝特定版本（補充）
-
-uv 也可以在 Git URL 後指定 tag。例如安裝 `v0.0.4`：
-
-```console
-uv tool install git+https://github.com/codemee/pdf_watermark.git@v0.0.4
-```
 
 ## 使用方式
 

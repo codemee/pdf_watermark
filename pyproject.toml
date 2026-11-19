@@ -1,6 +1,6 @@
 [project]
-name = "pdf-watermark"
-version = "0.0.4"
+name = "pdfcwm"
+version = "0.0.5"
 description = "Add diagonal text watermarks to PDF files"
 readme = "README.md"
 requires-python = ">=3.14"
@@ -12,9 +12,15 @@ dependencies = [
 [project.scripts]
 pdf-watermark = "pdf_watermark.cli:main"
 
+[project.urls]
+Homepage = "https://github.com/codemee/pdf_watermark"
+Repository = "https://github.com/codemee/pdf_watermark"
+Issues = "https://github.com/codemee/pdf_watermark/issues"
+
 [build-system]
-requires = ["uv_build>=0.11.29,<0.12.0"]
+requires = ["uv_build>=0.13.9,<0.14"]
 build-backend = "uv_build"
 
 [tool.uv.build-backend]
+module-name = "pdf_watermark"
 source-include = ["README.en.md", "docs/**", "tests/**"]

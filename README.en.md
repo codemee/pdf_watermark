@@ -19,6 +19,35 @@ English | [繁體中文](https://github.com/codemee/pdf_watermark/blob/main/READ
 - Python 3.14 or newer
 - [uv](https://docs.astral.sh/uv/)
 
+## Install from PyPI (recommended)
+
+This project is published on PyPI as [`pdfcwm`](https://pypi.org/project/pdfcwm/), while the installed command remains `pdf-watermark`. Without a version specifier, uv installs the latest release:
+
+```console
+uv tool install pdfcwm
+pdf-watermark input.pdf
+```
+
+Run without installing:
+
+```console
+uvx --from pdfcwm pdf-watermark input.pdf
+```
+
+Upgrade to the latest release:
+
+```console
+uv tool upgrade pdfcwm
+```
+
+### Install a specific version (optional)
+
+For example, to install `0.0.5`:
+
+```console
+uv tool install pdfcwm@0.0.5
+```
+
 ## Run the latest release from a ZIP without Git
 
 This repository is public. The URL below follows the [GitHub Latest Release](https://github.com/codemee/pdf_watermark/releases/latest) automatically and does not require Git.
@@ -47,8 +76,8 @@ On any platform, you can instead select **Code > Download ZIP** on GitHub, extra
 Run the tool without installing it:
 
 ```console
-uvx . input.pdf
-uvx . --text "Top Secret" input.pdf
+uvx --from . pdf-watermark input.pdf
+uvx --from . pdf-watermark --text "Top Secret" input.pdf
 ```
 
 To install the `pdf-watermark` command persistently:
@@ -61,7 +90,7 @@ pdf-watermark input.pdf
 You can also install directly from the ZIP URL without downloading or extracting it manually:
 
 ```console
-uv tool install "pdf-watermark @ https://github.com/codemee/pdf_watermark/releases/latest/download/pdf-watermark-source.zip"
+uv tool install "pdfcwm @ https://github.com/codemee/pdf_watermark/releases/latest/download/pdf-watermark-source.zip"
 pdf-watermark input.pdf
 ```
 
@@ -70,7 +99,7 @@ None of these methods require Git. uv will still download Python and Python pack
 To upgrade an existing installation to the latest release using the same URL:
 
 ```console
-uv tool install --force "pdf-watermark @ https://github.com/codemee/pdf_watermark/releases/latest/download/pdf-watermark-source.zip"
+uv tool install --force "pdfcwm @ https://github.com/codemee/pdf_watermark/releases/latest/download/pdf-watermark-source.zip"
 ```
 
 ## Install the latest default-branch revision with Git
@@ -87,14 +116,6 @@ uv tool install --force git+https://github.com/codemee/pdf_watermark.git
 ```
 
 This installation method requires Git. To refresh an installation made from the ZIP URL instead, rerun its `uv tool install` command with `--force`.
-
-### Install a specific version (optional)
-
-uv also accepts a tag after the Git URL. For example, to install `v0.0.4`:
-
-```console
-uv tool install git+https://github.com/codemee/pdf_watermark.git@v0.0.4
-```
 
 ## Usage
 
