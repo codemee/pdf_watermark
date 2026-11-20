@@ -16,7 +16,7 @@ English | [繁體中文](https://github.com/codemee/pdf_watermark/blob/main/READ
 ## Requirements
 
 - Windows, macOS, or Linux
-- Python 3.14 or newer
+- Python 3.12 or newer
 - [uv](https://docs.astral.sh/uv/)
 
 ## Install from PyPI (recommended)

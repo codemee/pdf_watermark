@@ -16,7 +16,7 @@
 ## 系統需求
 
 - Windows、macOS 或 Linux
-- Python 3.14 或更新版本
+- Python 3.12 或更新版本
 - [uv](https://docs.astral.sh/uv/)
 
 ## 從 PyPI 安裝（建議）
